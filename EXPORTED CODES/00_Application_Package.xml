@@ -3,7 +3,7 @@
   ServiceNow Export: Application/Scoped Package Definition
   Table: sys_app
   Project: Automated Employee Onboarding & Offboarding System
-  Author: AYUB HUSSAIN SHAIK
+  Author: Mahammad Abubakar Siddiq
   Organization: SKILLWALLET INTERNSHIP
   Date: 2026-07-01
   Description: Scoped application container for all components of the
@@ -23,7 +23,7 @@
 - Email notifications for all workflow events
 - SLA definitions for process compliance tracking
 
-Built for SKILLWALLET INTERNSHIP by AYUB HUSSAIN SHAIK.</description>
+Built for SKILLWALLET INTERNSHIP by Mahammad Abubakar Siddiq.</description>
     <scope>x_empl_lifecycle</scope>
     <version>1.0.0</version>
     <vendor>SKILLWALLET INTERNSHIP</vendor>
