@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: UI Policies - Dynamic Form Field Visibility
+  Table: catalog_ui_policy
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Controls field visibility based on Request Type selection
+-->
+<record_update table="catalog_ui_policy">
+
+  <!-- UI Policy 1: Show Joining Date when Request Type = Onboarding -->
+  <catalog_ui_policy action="INSERT_OR_UPDATE">
+    <short_description>Show Joining Date for Onboarding</short_description>
+    <active>true</active>
+    <applies_to>catalog_item</applies_to>
+    <catalog_item display_value="Onboard / Offboard Employee">f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8</catalog_item>
+    <run_scripts>true</run_scripts>
+    <script_true>
+      /* Show Joining Date when Onboarding selected */
+      g_form.setVisible('joining_date', true);
+      g_form.setVisible('exit_date', false);
+      g_form.setMandatory('joining_date', true);
+      g_form.setMandatory('exit_date', false);
+    </script_true>
+    <script_false>
+      /* Hide Joining Date when not Onboarding */
+      g_form.setVisible('joining_date', false);
+      g_form.setMandatory('joining_date', false);
+    </script_false>
+    <conditions>
+      <condition>
+        <field>request_type</field>
+        <operator>=</operator>
+        <value>onboarding</value>
+      </condition>
+    </conditions>
+    <ui_policy_actions>
+      <catalog_ui_policy_action action="INSERT_OR_UPDATE">
+        <catalog_variable display_value="Joining Date">joining_date</catalog_variable>
+        <visible>true</visible>
+        <mandatory>true</mandatory>
+        <read_only>false</read_only>
+        <sys_id>d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9</sys_id>
+      </catalog_ui_policy_action>
+      <catalog_ui_policy_action action="INSERT_OR_UPDATE">
+        <catalog_variable display_value="Exit Date">exit_date</catalog_variable>
+        <visible>false</visible>
+        <mandatory>false</mandatory>
+        <read_only>false</read_only>
+        <sys_id>e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9</sys_id>
+      </catalog_ui_policy_action>
+    </ui_policy_actions>
+    <order>100</order>
+    <sys_id>g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </catalog_ui_policy>
+
+  <!-- UI Policy 2: Show Exit Date when Request Type = Offboarding -->
+  <catalog_ui_policy action="INSERT_OR_UPDATE">
+    <short_description>Show Exit Date for Offboarding</short_description>
+    <active>true</active>
+    <applies_to>catalog_item</applies_to>
+    <catalog_item display_value="Onboard / Offboard Employee">f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8</catalog_item>
+    <run_scripts>true</run_scripts>
+    <script_true>
+      /* Show Exit Date when Offboarding selected */
+      g_form.setVisible('exit_date', true);
+      g_form.setVisible('joining_date', false);
+      g_form.setMandatory('exit_date', true);
+      g_form.setMandatory('joining_date', false);
+    </script_true>
+    <script_false>
+      /* Hide Exit Date when not Offboarding */
+      g_form.setVisible('exit_date', false);
+      g_form.setMandatory('exit_date', false);
+    </script_false>
+    <conditions>
+      <condition>
+        <field>request_type</field>
+        <operator>=</operator>
+        <value>offboarding</value>
+      </condition>
+    </conditions>
+    <ui_policy_actions>
+      <catalog_ui_policy_action action="INSERT_OR_UPDATE">
+        <catalog_variable display_value="Exit Date">exit_date</catalog_variable>
+        <visible>true</visible>
+        <mandatory>true</mandatory>
+        <read_only>false</read_only>
+        <sys_id>f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9</sys_id>
+      </catalog_ui_policy_action>
+      <catalog_ui_policy_action action="INSERT_OR_UPDATE">
+        <catalog_variable display_value="Joining Date">joining_date</catalog_variable>
+        <visible>false</visible>
+        <mandatory>false</mandatory>
+        <read_only>false</read_only>
+        <sys_id>a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0</sys_id>
+      </catalog_ui_policy_action>
+    </ui_policy_actions>
+    <order>200</order>
+    <sys_id>h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </catalog_ui_policy>
+
+</record_update>

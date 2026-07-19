@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Access Control Lists (ACLs)
+  Table: sys_security_acl
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+-->
+<record_update table="sys_security_acl">
+
+  <!-- ACL 1: HR Role - Read Access to All Lifecycle Records -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle - HR Read Access</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>table</object_type>
+    <operation>read</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.hr</roles>
+    <script/>
+    <condition/>
+    <sys_id>a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+  <!-- ACL 2: HR Role - Write Access to Status and HR Fields -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle - HR Write Access</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>table</object_type>
+    <operation>write</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.hr</roles>
+    <script><![CDATA[
+/* HR can update records where department = HR */
+answer = (current.department == 'hr' || gs.hasRole('x_empl_lifecycle.admin'));
+    ]]></script>
+    <sys_id>b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+  <!-- ACL 3: IT Role - Read Access to Lifecycle Records -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle - IT Read Access</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>table</object_type>
+    <operation>read</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.it</roles>
+    <script/>
+    <condition/>
+    <sys_id>c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+  <!-- ACL 4: IT Role - Write Access to Access Details and Assets -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle.access_details - IT Field Write</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>field</object_type>
+    <field>access_details</field>
+    <operation>write</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.it</roles>
+    <sys_id>d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+  <!-- ACL 5: Facilities Role - Read Access -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle - Facilities Read Access</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>table</object_type>
+    <operation>read</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.facilities</roles>
+    <script/>
+    <condition/>
+    <sys_id>e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+  <!-- ACL 6: Security Role - Read Access -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle - Security Read Access</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>table</object_type>
+    <operation>read</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.security</roles>
+    <script/>
+    <condition/>
+    <sys_id>f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+  <!-- ACL 7: Manager - Read Access to Own Team Records -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle - Manager Team Read Access</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>table</object_type>
+    <operation>read</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.manager</roles>
+    <script><![CDATA[
+/* Managers can only read records where they are the assigned manager */
+answer = (current.manager == gs.getUserID() || gs.hasRole('x_empl_lifecycle.admin'));
+    ]]></script>
+    <sys_id>a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+  <!-- ACL 8: Admin - Full Access -->
+  <sys_security_acl action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle - Admin Full Access</name>
+    <object>x_empl_lifecycle</object>
+    <object_type>table</object_type>
+    <operation>write</operation>
+    <active>true</active>
+    <admin_overrides>true</admin_overrides>
+    <roles>x_empl_lifecycle.admin</roles>
+    <script/>
+    <condition/>
+    <sys_id>b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+  </sys_security_acl>
+
+</record_update>

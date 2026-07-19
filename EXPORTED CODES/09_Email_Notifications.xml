@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Email Notifications
+  Table: sysevent_email_action
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Automated email notification templates for key workflow events
+-->
+<record_update table="sysevent_email_action">
+
+  <!-- Notification 1: Onboarding/Offboarding Request Submitted -->
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - Request Submitted Confirmation</name>
+    <event_name>x_empl_lifecycle.submitted</event_name>
+    <active>true</active>
+    <subject>Your ${request_type} Request Has Been Submitted - Employee ID: ${employee_id}</subject>
+    <message><![CDATA[
+Dear ${requested_for.first_name},
+
+Your employee ${request_type} request has been successfully submitted and is now pending manager approval.
+
+REQUEST DETAILS:
+================
+Employee Name:    ${employee_full_name}
+Employee ID:      ${employee_id}
+Department:       ${department}
+Request Type:     ${request_type}
+Submitted On:     ${sys_created_on}
+Reference Number: ${number}
+
+WHAT HAPPENS NEXT:
+==================
+1. Your manager will receive an approval request via email
+2. Upon approval, tasks will be automatically assigned to HR, IT, Facilities, and Security teams
+3. You will receive a notification once all tasks are completed
+
+Please contact HR if you need assistance: hr@skillwallet.com
+
+Best regards,
+HR Automation System - SKILLWALLET
+    ]]></message>
+    <type>email</type>
+    <recipient_fields>requested_for</recipient_fields>
+    <sys_id>a1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sysevent_email_action>
+
+  <!-- Notification 2: Manager Approval Request -->
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - Manager Approval Required</name>
+    <event_name>x_empl_lifecycle.approval_required</event_name>
+    <active>true</active>
+    <subject>ACTION REQUIRED: Employee ${request_type} Approval Needed - ${employee_full_name}</subject>
+    <message><![CDATA[
+Dear ${manager.first_name},
+
+An employee ${request_type} request requires your approval.
+
+EMPLOYEE DETAILS:
+=================
+Employee Name:    ${employee_full_name}
+Employee ID:      ${employee_id}
+Department:       ${department}
+Request Type:     ${request_type}
+Joining Date:     ${joining_date}
+Exit Date:        ${exit_date}
+Submitted On:     ${sys_created_on}
+
+TO APPROVE OR REJECT:
+=====================
+Please log in to ServiceNow and navigate to the approval record to approve or reject this request.
+Direct Link: ${approval_link}
+
+IMPORTANT: This approval must be completed within 3 business days.
+
+For questions, please contact HR: hr@skillwallet.com
+
+Best regards,
+HR Automation System - SKILLWALLET
+    ]]></message>
+    <type>email</type>
+    <recipient_fields>manager</recipient_fields>
+    <sys_id>b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sysevent_email_action>
+
+  <!-- Notification 3: Request Approved - Department Task Notification -->
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - Request Approved Department Alert</name>
+    <event_name>x_empl_lifecycle.approved</event_name>
+    <active>true</active>
+    <subject>Employee ${request_type} Approved - Department Tasks Assigned</subject>
+    <message><![CDATA[
+Dear Team,
+
+The employee ${request_type} request has been approved. Departmental tasks have been automatically created and assigned.
+
+EMPLOYEE INFORMATION:
+=====================
+Employee Name:    ${employee_full_name}
+Employee ID:      ${employee_id}
+Department:       ${department}
+Request Type:     ${request_type}
+Approved By:      ${approver}
+Approval Date:    ${approval_date}
+
+TASKS CREATED FOR:
+==================
+- HR Department: Employee records, documentation, payroll
+- IT Department: System access, hardware, accounts
+- Facilities Department: Workspace, keys, parking
+- Security Department: Access badge, building permissions
+
+Please complete your assigned tasks promptly.
+
+HR Automation System - SKILLWALLET
+    ]]></message>
+    <type>email</type>
+    <recipient_fields>assignment_group</recipient_fields>
+    <sys_id>c1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sysevent_email_action>
+
+  <!-- Notification 4: Lifecycle Process Completed -->
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - Process Completed Notification</name>
+    <event_name>x_empl_lifecycle.completed</event_name>
+    <active>true</active>
+    <subject>Employee ${request_type} Process COMPLETED - ${employee_full_name}</subject>
+    <message><![CDATA[
+Dear ${requested_for.first_name},
+
+We are pleased to confirm that the employee ${request_type} process has been successfully completed.
+
+COMPLETION SUMMARY:
+===================
+Employee Name:      ${employee_full_name}
+Employee ID:        ${employee_id}
+Department:         ${department}
+Request Type:       ${request_type}
+Completion Date:    ${sys_updated_on}
+Reference Number:   ${number}
+
+COMPLETED TASKS:
+================
+✓ HR - Employee records, documentation, payroll updated
+✓ IT - System access and hardware provisioned/deprovisioned
+✓ Facilities - Workspace and keys prepared/returned
+✓ Security - Access badges and building permissions configured
+
+${onboarding_message}
+
+If you have any questions, please contact HR: hr@skillwallet.com
+
+Best regards,
+HR Automation System - SKILLWALLET
+    ]]></message>
+    <type>email</type>
+    <recipient_fields>requested_for,manager</recipient_fields>
+    <sys_id>d1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sysevent_email_action>
+
+  <!-- Notification 5: Request Rejected -->
+  <sysevent_email_action action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - Request Rejected Notification</name>
+    <event_name>x_empl_lifecycle.rejected</event_name>
+    <active>true</active>
+    <subject>Employee ${request_type} Request REJECTED - ${employee_full_name}</subject>
+    <message><![CDATA[
+Dear ${requested_for.first_name},
+
+Unfortunately, your employee ${request_type} request has been rejected.
+
+REQUEST DETAILS:
+================
+Employee Name:    ${employee_full_name}
+Employee ID:      ${employee_id}
+Department:       ${department}
+Request Type:     ${request_type}
+Rejected By:      ${approver}
+Rejection Date:   ${updated_on}
+Rejection Reason: ${comments}
+
+NEXT STEPS:
+===========
+Please contact your HR department or your manager for further clarification regarding this rejection.
+
+HR Contact: hr@skillwallet.com
+
+Best regards,
+HR Automation System - SKILLWALLET
+    ]]></message>
+    <type>email</type>
+    <recipient_fields>requested_for</recipient_fields>
+    <sys_id>e1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sysevent_email_action>
+
+</record_update>

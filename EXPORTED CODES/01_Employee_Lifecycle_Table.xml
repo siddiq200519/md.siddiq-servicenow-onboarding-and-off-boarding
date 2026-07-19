@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Custom Table Definition
+  Table Name: Employee Lifecycle (x_empl_lifecycle)
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+-->
+<record_update table="sys_db_object">
+  <sys_db_object action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle</name>
+    <label>Employee Lifecycle</label>
+    <plural_label>Employee Lifecycles</plural_label>
+    <super_class display_value="Task">task</super_class>
+    <is_extendable>false</is_extendable>
+    <create_access>true</create_access>
+    <update_access>true</update_access>
+    <read_access>true</read_access>
+    <delete_access>false</delete_access>
+    <create_access_controls>true</create_access_controls>
+    <access>public</access>
+    <sys_class_name>sys_db_object</sys_class_name>
+    <sys_id>a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+    <columns>
+      <!-- Field 1: Employee ID -->
+      <element>
+        <name>employee_id</name>
+        <label>Employee ID</label>
+        <internal_type>string</internal_type>
+        <max_length>40</max_length>
+        <mandatory>true</mandatory>
+        <active>true</active>
+        <sys_id>b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6</sys_id>
+      </element>
+      <!-- Field 2: Employee Full Name -->
+      <element>
+        <name>employee_full_name</name>
+        <label>Employee Full Name</label>
+        <internal_type>string</internal_type>
+        <max_length>100</max_length>
+        <mandatory>true</mandatory>
+        <active>true</active>
+        <sys_id>c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6</sys_id>
+      </element>
+      <!-- Field 3: Department -->
+      <element>
+        <name>department</name>
+        <label>Department</label>
+        <internal_type>string</internal_type>
+        <max_length>80</max_length>
+        <mandatory>true</mandatory>
+        <active>true</active>
+        <sys_id>d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6</sys_id>
+      </element>
+      <!-- Field 4: Request Type -->
+      <element>
+        <name>request_type</name>
+        <label>Request Type</label>
+        <internal_type>choice</internal_type>
+        <max_length>40</max_length>
+        <mandatory>true</mandatory>
+        <active>true</active>
+        <sys_id>e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6</sys_id>
+      </element>
+      <!-- Field 5: Joining Date -->
+      <element>
+        <name>joining_date</name>
+        <label>Joining Date</label>
+        <internal_type>glide_date</internal_type>
+        <mandatory>false</mandatory>
+        <active>true</active>
+        <sys_id>f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6</sys_id>
+      </element>
+      <!-- Field 6: Exit Date -->
+      <element>
+        <name>exit_date</name>
+        <label>Exit Date</label>
+        <internal_type>glide_date</internal_type>
+        <mandatory>false</mandatory>
+        <active>true</active>
+        <sys_id>a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7</sys_id>
+      </element>
+      <!-- Field 7: Manager -->
+      <element>
+        <name>manager</name>
+        <label>Manager</label>
+        <internal_type>reference</internal_type>
+        <reference>sys_user</reference>
+        <max_length>32</max_length>
+        <mandatory>false</mandatory>
+        <active>true</active>
+        <sys_id>b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7</sys_id>
+      </element>
+      <!-- Field 8: Request Status -->
+      <element>
+        <name>request_status</name>
+        <label>Request Status</label>
+        <internal_type>choice</internal_type>
+        <max_length>40</max_length>
+        <mandatory>false</mandatory>
+        <active>true</active>
+        <default_value>pending</default_value>
+        <sys_id>c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7</sys_id>
+      </element>
+      <!-- Field 9: Assets -->
+      <element>
+        <name>assets</name>
+        <label>Assets</label>
+        <internal_type>string</internal_type>
+        <max_length>255</max_length>
+        <mandatory>false</mandatory>
+        <active>true</active>
+        <sys_id>d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7</sys_id>
+      </element>
+      <!-- Field 10: Access Details -->
+      <element>
+        <name>access_details</name>
+        <label>Access Details</label>
+        <internal_type>string</internal_type>
+        <max_length>500</max_length>
+        <mandatory>false</mandatory>
+        <active>true</active>
+        <sys_id>e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7</sys_id>
+      </element>
+    </columns>
+  </sys_db_object>
+</record_update>

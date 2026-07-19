@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: User Groups (Departments)
+  Table: sys_user_group
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Department groups for task assignment in workflow automation
+-->
+<record_update table="sys_user_group">
+
+  <!-- Group 1: HR Department -->
+  <sys_user_group action="INSERT_OR_UPDATE">
+    <name>HR Department</name>
+    <description>Human Resources Department group responsible for employee records, payroll, documentation, orientation, and exit procedures in the Employee Lifecycle system.</description>
+    <active>true</active>
+    <email>hr@skillwallet.com</email>
+    <type display_value="HR">hr</type>
+    <roles>x_empl_lifecycle.hr</roles>
+    <sys_id>c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_group>
+
+  <!-- Group 2: IT Department -->
+  <sys_user_group action="INSERT_OR_UPDATE">
+    <name>IT Department</name>
+    <description>Information Technology Department group responsible for system access provisioning, hardware setup/collection, email configuration, and application access management.</description>
+    <active>true</active>
+    <email>it@skillwallet.com</email>
+    <type display_value="IT">it</type>
+    <roles>x_empl_lifecycle.it</roles>
+    <sys_id>d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_group>
+
+  <!-- Group 3: Facilities Department -->
+  <sys_user_group action="INSERT_OR_UPDATE">
+    <name>Facilities Department</name>
+    <description>Facilities Department group responsible for workspace preparation, office key issuance, parking access, and building coordination for employee onboarding and offboarding.</description>
+    <active>true</active>
+    <email>facilities@skillwallet.com</email>
+    <type display_value="Facilities">facilities</type>
+    <roles>x_empl_lifecycle.facilities</roles>
+    <sys_id>e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_group>
+
+  <!-- Group 4: Security Department -->
+  <sys_user_group action="INSERT_OR_UPDATE">
+    <name>Security Department</name>
+    <description>Security Department group responsible for physical access badge issuance/deactivation, building security permissions, and biometric data management.</description>
+    <active>true</active>
+    <email>security@skillwallet.com</email>
+    <type display_value="Security">security</type>
+    <roles>x_empl_lifecycle.security</roles>
+    <sys_id>f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_group>
+
+</record_update>

@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Flow Designer Workflow
+  Flow: Employee Onboarding and Offboarding Workflow
+  Table: sys_hub_flow
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Complete Flow Designer flow with trigger, manager approval,
+               department task creation, status updates, and email notifications
+-->
+<record_update table="sys_hub_flow">
+  <sys_hub_flow action="INSERT_OR_UPDATE">
+    <name>Employee Onboarding and Offboarding Workflow</name>
+    <description>Automated workflow to handle employee onboarding and offboarding. Triggers on catalog item submission, routes to manager approval, creates departmental tasks, updates lifecycle records, and sends email notifications.</description>
+    <active>true</active>
+    <run_as>system</run_as>
+    <sys_id>e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+
+    <!-- TRIGGER: Service Catalog - Catalog Item Requested -->
+    <trigger>
+      <sys_hub_trigger_instance action="INSERT_OR_UPDATE">
+        <trigger display_value="Service Catalog - Catalog Item Requested">service_catalog_item_requested</trigger>
+        <catalog_item display_value="Onboard / Offboard Employee">f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8</catalog_item>
+        <active>true</active>
+        <sys_id>f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0</sys_id>
+      </sys_hub_trigger_instance>
+    </trigger>
+
+    <!-- FLOW ACTIONS -->
+    <flow_actions>
+
+      <!-- Step 1: Set Initial Status to In Progress -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>100</order>
+        <name>Set Lifecycle Status to In Progress</name>
+        <action_type>update_record</action_type>
+        <table>x_empl_lifecycle</table>
+        <filter_condition>employee_idSTARTSWITH{{trigger.request_variables.employee_id}}</filter_condition>
+        <fields>
+          <field>
+            <name>request_status</name>
+            <value>in_progress</value>
+          </field>
+        </fields>
+        <sys_id>a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 2: Manager Approval -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>200</order>
+        <name>Request Manager Approval</name>
+        <action_type>ask_for_approval</action_type>
+        <approvers>
+          <approver>{{trigger.request_variables.manager}}</approver>
+        </approvers>
+        <approval_field>state</approval_field>
+        <approval_value>approved</approval_value>
+        <rejection_value>rejected</rejection_value>
+        <wait_for>all</wait_for>
+        <due_date_offset>3</due_date_offset>
+        <due_date_unit>days</due_date_unit>
+        <sys_id>b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 3: Check if Approved (If/Else branch) -->
+      <!-- If Rejected: Update status to Cancelled -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>250</order>
+        <name>If Approval Rejected - Update Status to Cancelled</name>
+        <action_type>if</action_type>
+        <condition>{{steps.Request Manager Approval.approval_state}} == 'rejected'</condition>
+        <then_actions>
+          <sys_hub_action_instance action="INSERT_OR_UPDATE">
+            <order>251</order>
+            <name>Set Status Cancelled on Rejection</name>
+            <action_type>update_record</action_type>
+            <table>x_empl_lifecycle</table>
+            <fields>
+              <field><name>request_status</name><value>cancelled</value></field>
+            </fields>
+            <sys_id>c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1</sys_id>
+          </sys_hub_action_instance>
+          <!-- Send Rejection Notification -->
+          <sys_hub_action_instance action="INSERT_OR_UPDATE">
+            <order>252</order>
+            <name>Send Rejection Email Notification</name>
+            <action_type>send_email</action_type>
+            <to>{{trigger.requested_for.email}}</to>
+            <subject>Employee {{trigger.request_variables.request_type}} Request Rejected</subject>
+            <body>Dear Team, The {{trigger.request_variables.request_type}} request for Employee ID: {{trigger.request_variables.employee_id}} has been rejected by the manager. Please contact HR for further assistance.</body>
+            <sys_id>d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1</sys_id>
+          </sys_hub_action_instance>
+        </then_actions>
+        <sys_id>e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 4: Create HR Task -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>300</order>
+        <name>Create HR Department Task</name>
+        <action_type>create_task</action_type>
+        <task_table>task</task_table>
+        <task_fields>
+          <field><name>short_description</name><value>HR Task: Employee {{trigger.request_variables.request_type}} - {{trigger.request_variables.employee_full_name}}</value></field>
+          <field><name>description</name><value>HR Action Required for Employee {{trigger.request_variables.request_type}}:
+- Employee ID: {{trigger.request_variables.employee_id}}
+- Employee Name: {{trigger.request_variables.employee_full_name}}
+- Department: {{trigger.request_variables.department}}
+- Joining Date: {{trigger.request_variables.joining_date}}
+- Exit Date: {{trigger.request_variables.exit_date}}
+
+HR Responsibilities:
+- Update HR systems and records
+- Process payroll enrollment/removal
+- Prepare employee documentation
+- Conduct HR orientation (Onboarding) or exit interview (Offboarding)</value></field>
+          <field><name>assignment_group</name><value>HR Department</value></field>
+          <field><name>priority</name><value>2</value></field>
+          <field><name>category</name><value>HR</value></field>
+        </task_fields>
+        <sys_id>f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 5: Create IT Task -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>400</order>
+        <name>Create IT Department Task</name>
+        <action_type>create_task</action_type>
+        <task_table>task</task_table>
+        <task_fields>
+          <field><name>short_description</name><value>IT Task: Employee {{trigger.request_variables.request_type}} - {{trigger.request_variables.employee_full_name}}</value></field>
+          <field><name>description</name><value>IT Action Required for Employee {{trigger.request_variables.request_type}}:
+- Employee ID: {{trigger.request_variables.employee_id}}
+- Employee Name: {{trigger.request_variables.employee_full_name}}
+- Department: {{trigger.request_variables.department}}
+- Assets: {{trigger.request_variables.assets}}
+- Access Details: {{trigger.request_variables.access_details}}
+
+IT Responsibilities:
+- Provision/Deprovision system accounts and access
+- Set up/Collect hardware (laptop, phone, badge)
+- Configure email and collaboration tools
+- Grant/Revoke VPN, network, and application access</value></field>
+          <field><name>assignment_group</name><value>IT Department</value></field>
+          <field><name>priority</name><value>2</value></field>
+          <field><name>category</name><value>IT</value></field>
+        </task_fields>
+        <sys_id>a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 6: Create Facilities Task -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>500</order>
+        <name>Create Facilities Department Task</name>
+        <action_type>create_task</action_type>
+        <task_table>task</task_table>
+        <task_fields>
+          <field><name>short_description</name><value>Facilities Task: Employee {{trigger.request_variables.request_type}} - {{trigger.request_variables.employee_full_name}}</value></field>
+          <field><name>description</name><value>Facilities Action Required for Employee {{trigger.request_variables.request_type}}:
+- Employee ID: {{trigger.request_variables.employee_id}}
+- Employee Name: {{trigger.request_variables.employee_full_name}}
+- Department: {{trigger.request_variables.department}}
+
+Facilities Responsibilities:
+- Prepare/Clear workstation and desk space
+- Issue/Collect office keys and access badges
+- Set up/Return parking access
+- Coordinate with building management</value></field>
+          <field><name>assignment_group</name><value>Facilities Department</value></field>
+          <field><name>priority</name><value>3</value></field>
+          <field><name>category</name><value>Facilities</value></field>
+        </task_fields>
+        <sys_id>b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 7: Create Security Task -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>600</order>
+        <name>Create Security Department Task</name>
+        <action_type>create_task</action_type>
+        <task_table>task</task_table>
+        <task_fields>
+          <field><name>short_description</name><value>Security Task: Employee {{trigger.request_variables.request_type}} - {{trigger.request_variables.employee_full_name}}</value></field>
+          <field><name>description</name><value>Security Action Required for Employee {{trigger.request_variables.request_type}}:
+- Employee ID: {{trigger.request_variables.employee_id}}
+- Employee Name: {{trigger.request_variables.employee_full_name}}
+- Department: {{trigger.request_variables.department}}
+
+Security Responsibilities:
+- Issue/Deactivate physical access badges
+- Configure building access permissions
+- Register/Remove biometric data
+- Conduct security briefing (Onboarding) or clearance (Offboarding)</value></field>
+          <field><name>assignment_group</name><value>Security Department</value></field>
+          <field><name>priority</name><value>2</value></field>
+          <field><name>category</name><value>Security</value></field>
+        </task_fields>
+        <sys_id>c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 8: Wait for All Tasks to Complete -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>700</order>
+        <name>Wait for All Department Tasks to Complete</name>
+        <action_type>wait_for_condition</action_type>
+        <table>task</table>
+        <condition>parent.request.sc_req_item.ritm_number == {{trigger.request_number}} AND state == 3</condition>
+        <wait_type>all_records</wait_type>
+        <sys_id>d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 9: Update Lifecycle Status to Completed -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>800</order>
+        <name>Update Lifecycle Status to Completed</name>
+        <action_type>update_record</action_type>
+        <table>x_empl_lifecycle</table>
+        <filter_condition>employee_id={{trigger.request_variables.employee_id}}</filter_condition>
+        <fields>
+          <field><name>request_status</name><value>completed</value></field>
+        </fields>
+        <sys_id>e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2</sys_id>
+      </sys_hub_action_instance>
+
+      <!-- Step 10: Send Completion Notification -->
+      <sys_hub_action_instance action="INSERT_OR_UPDATE">
+        <order>900</order>
+        <name>Send Completion Email Notification</name>
+        <action_type>send_email</action_type>
+        <to>{{trigger.requested_for.email}}</to>
+        <cc>{{trigger.request_variables.manager.email}}</cc>
+        <subject>Employee {{trigger.request_variables.request_type}} Process Completed - {{trigger.request_variables.employee_full_name}}</subject>
+        <body>Dear Team,
+
+The employee {{trigger.request_variables.request_type}} process has been successfully completed.
+
+Details:
+- Employee: {{trigger.request_variables.employee_full_name}}
+- Employee ID: {{trigger.request_variables.employee_id}}
+- Department: {{trigger.request_variables.department}}
+- Process Type: {{trigger.request_variables.request_type}}
+- Completion Date: {{now}}
+
+All departmental tasks (HR, IT, Facilities, Security) have been completed.
+
+Thank you,
+HR Automation System</body>
+        <sys_id>f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2</sys_id>
+      </sys_hub_action_instance>
+
+    </flow_actions>
+  </sys_hub_flow>
+</record_update>

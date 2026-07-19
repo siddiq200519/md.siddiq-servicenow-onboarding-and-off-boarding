@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Application/Scoped Package Definition
+  Table: sys_app
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Scoped application container for all components of the
+               Employee Onboarding & Offboarding solution
+-->
+<record_update table="sys_app">
+  <sys_app action="INSERT_OR_UPDATE">
+    <name>Employee Onboarding and Offboarding</name>
+    <short_description>Automated solution for employee onboarding and offboarding lifecycle management in ServiceNow.</short_description>
+    <description>A comprehensive ServiceNow application that automates the complete employee lifecycle management process. This scoped application contains all components including:
+- Custom Employee Lifecycle table and data model
+- Service Catalog item with dynamic form variables
+- UI Policies for conditional field visibility
+- Business Rules for data validation and status automation
+- Flow Designer workflow with manager approval and department task assignment
+- Role-Based Access Control with granular ACLs
+- Email notifications for all workflow events
+- SLA definitions for process compliance tracking
+
+Built for SKILLWALLET INTERNSHIP by AYUB HUSSAIN SHAIK.</description>
+    <scope>x_empl_lifecycle</scope>
+    <version>1.0.0</version>
+    <vendor>SKILLWALLET INTERNSHIP</vendor>
+    <vendor_prefix>x_empl</vendor_prefix>
+    <active>true</active>
+    <enable_demo_data>false</enable_demo_data>
+    <private>false</private>
+    <sys_id>d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7</sys_id>
+    <sys_class_name>sys_app</sys_class_name>
+    <logo/>
+    <categories>hr,workflow,automation</categories>
+    <license_definition/>
+    <dependencies>
+      <dependency>
+        <package>com.glide.service-catalog</package>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <package>com.glide.flow-designer</package>
+        <version>1.0</version>
+      </dependency>
+    </dependencies>
+  </sys_app>
+</record_update>

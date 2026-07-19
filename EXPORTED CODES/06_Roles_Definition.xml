@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Roles and Access Control Lists (ACLs)
+  Tables: sys_user_role, sys_security_acl
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Role definitions and ACL configurations for HR, IT,
+               Facilities, Security, and Manager stakeholders
+-->
+<record_update table="sys_user_role">
+
+  <!-- Role 1: HR Role -->
+  <sys_user_role action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle.hr</name>
+    <description>Human Resources role for Employee Lifecycle Management. Grants HR team access to employee onboarding/offboarding records, HR tasks, and lifecycle data.</description>
+    <grantable>true</grantable>
+    <elevated_privilege>false</elevated_privilege>
+    <sys_id>a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_role>
+
+  <!-- Role 2: IT Role -->
+  <sys_user_role action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle.it</name>
+    <description>Information Technology role for Employee Lifecycle Management. Grants IT team access to IT provisioning tasks and system access details.</description>
+    <grantable>true</grantable>
+    <elevated_privilege>false</elevated_privilege>
+    <sys_id>b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_role>
+
+  <!-- Role 3: Facilities Role -->
+  <sys_user_role action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle.facilities</name>
+    <description>Facilities role for Employee Lifecycle Management. Grants Facilities team access to workspace and access badge related tasks.</description>
+    <grantable>true</grantable>
+    <elevated_privilege>false</elevated_privilege>
+    <sys_id>c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_role>
+
+  <!-- Role 4: Security Role -->
+  <sys_user_role action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle.security</name>
+    <description>Security role for Employee Lifecycle Management. Grants Security team access to physical access and badge management tasks.</description>
+    <grantable>true</grantable>
+    <elevated_privilege>false</elevated_privilege>
+    <sys_id>d8e9f0a1b2c3d4e5f6a7b8b9c0d1e2f3</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_role>
+
+  <!-- Role 5: Manager Role -->
+  <sys_user_role action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle.manager</name>
+    <description>Manager role for Employee Lifecycle Management. Grants managers the ability to approve onboarding and offboarding requests and view team lifecycle records.</description>
+    <grantable>true</grantable>
+    <elevated_privilege>false</elevated_privilege>
+    <sys_id>e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_role>
+
+  <!-- Role 6: Admin Role -->
+  <sys_user_role action="INSERT_OR_UPDATE">
+    <name>x_empl_lifecycle.admin</name>
+    <description>Administrator role for Employee Lifecycle Management. Full access to all lifecycle records, configurations, and administrative functions.</description>
+    <grantable>true</grantable>
+    <elevated_privilege>true</elevated_privilege>
+    <sys_id>f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_user_role>
+
+</record_update>

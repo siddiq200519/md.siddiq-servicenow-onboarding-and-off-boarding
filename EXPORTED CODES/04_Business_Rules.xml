@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Business Rules - Data Consistency Framework
+  Table: sys_script
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Server-side logic for automatic status updates,
+               data validation, and lifecycle record management
+-->
+<record_update table="sys_script">
+
+  <!-- Business Rule 1: Auto-Update Status on Task Completion -->
+  <sys_script action="INSERT_OR_UPDATE">
+    <name>Auto Update Lifecycle Status on Task Complete</name>
+    <collection>x_empl_lifecycle</collection>
+    <active>true</active>
+    <action_insert>false</action_insert>
+    <action_update>true</action_update>
+    <action_delete>false</action_delete>
+    <action_query>false</action_query>
+    <when>after</when>
+    <order>100</order>
+    <filter_condition>request_statusCHANGES</filter_condition>
+    <script><![CDATA[
+(function executeRule(current, previous /*null when async*/) {
+
+    // Business Rule: Auto Update Lifecycle Status on Task Completion
+    // Trigger: When request_status field changes on Employee Lifecycle table
+    // Purpose: Automatically close lifecycle records and update related requests
+
+    var newStatus = current.request_status.toString();
+    var empId = current.employee_id.toString();
+    var reqType = current.request_type.toString();
+
+    gs.log('Employee Lifecycle BR: Status changed to ' + newStatus + ' for Employee: ' + empId, 'EmployeeLifecycleRule');
+
+    // If all tasks are completed, mark the record as fully processed
+    if (newStatus === 'completed') {
+
+        // Update the parent catalog request if linked
+        var scReq = new GlideRecord('sc_request');
+        scReq.addQuery('u_employee_id', empId);
+        scReq.addQuery('active', true);
+        scReq.orderByDesc('sys_created_on');
+        scReq.setLimit(1);
+        scReq.query();
+
+        if (scReq.next()) {
+            scReq.state = '3'; // Closed Complete
+            scReq.close_notes = 'Employee ' + reqType + ' process completed successfully for Employee ID: ' + empId;
+            scReq.update();
+            gs.log('Parent request closed for Employee: ' + empId, 'EmployeeLifecycleRule');
+        }
+
+        // Send completion notification
+        var notification = new GlideRecord('sysevent_email_action');
+        gs.eventQueue('x_empl_lifecycle.completed', current, current.employee_id, current.request_type);
+    }
+
+    // If status changed to In Progress, log the transition
+    if (newStatus === 'in_progress') {
+        gs.log('Employee lifecycle process started for: ' + empId + ' (' + reqType + ')', 'EmployeeLifecycleRule');
+    }
+
+    // Prevent invalid status transitions
+    if (previous != null) {
+        var prevStatus = previous.request_status.toString();
+        // Cannot revert from 'completed' back to 'pending'
+        if (prevStatus === 'completed' && newStatus === 'pending') {
+            current.request_status = 'completed';
+            gs.addErrorMessage('Cannot revert a completed lifecycle record back to Pending.');
+        }
+    }
+
+})(current, previous);
+    ]]></script>
+    <sys_id>b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_script>
+
+  <!-- Business Rule 2: Validate Mandatory Date Fields on Submit -->
+  <sys_script action="INSERT_OR_UPDATE">
+    <name>Validate Date Fields Based on Request Type</name>
+    <collection>x_empl_lifecycle</collection>
+    <active>true</active>
+    <action_insert>true</action_insert>
+    <action_update>true</action_update>
+    <action_delete>false</action_delete>
+    <action_query>false</action_query>
+    <when>before</when>
+    <order>50</order>
+    <script><![CDATA[
+(function executeRule(current, previous /*null when async*/) {
+
+    // Business Rule: Validate Date Fields Based on Request Type
+    // Trigger: Before insert or update on Employee Lifecycle table
+    // Purpose: Enforce mandatory date field based on request type
+
+    var reqType = current.request_type.toString();
+
+    if (reqType === 'onboarding') {
+        // Joining Date is mandatory for Onboarding
+        if (current.joining_date.nil()) {
+            gs.addErrorMessage('Joining Date is required for Onboarding requests.');
+            current.setAbortAction(true);
+        }
+    } else if (reqType === 'offboarding') {
+        // Exit Date is mandatory for Offboarding
+        if (current.exit_date.nil()) {
+            gs.addErrorMessage('Exit Date is required for Offboarding requests.');
+            current.setAbortAction(true);
+        }
+    }
+
+    // Validate Employee ID format (must not be empty)
+    if (current.employee_id.nil() || current.employee_id.toString().trim() === '') {
+        gs.addErrorMessage('Employee ID is mandatory and cannot be blank.');
+        current.setAbortAction(true);
+    }
+
+    // Validate Full Name
+    if (current.employee_full_name.nil() || current.employee_full_name.toString().trim() === '') {
+        gs.addErrorMessage('Employee Full Name is mandatory.');
+        current.setAbortAction(true);
+    }
+
+    // Set default status on new records
+    if (current.isNewRecord()) {
+        current.request_status = 'pending';
+        gs.log('New lifecycle record created for Employee: ' + current.employee_id, 'EmployeeValidationRule');
+    }
+
+})(current, previous);
+    ]]></script>
+    <sys_id>c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_script>
+
+  <!-- Business Rule 3: Create Lifecycle Record from Catalog Request -->
+  <sys_script action="INSERT_OR_UPDATE">
+    <name>Create Employee Lifecycle Record on Catalog Submit</name>
+    <collection>sc_req_item</collection>
+    <active>true</active>
+    <action_insert>true</action_insert>
+    <action_update>false</action_update>
+    <action_delete>false</action_delete>
+    <action_query>false</action_query>
+    <when>after</when>
+    <order>100</order>
+    <filter_condition>cat_itemDYNAMIC90d1921e5f510100a9ad2572f2b477fe^EQ</filter_condition>
+    <script><![CDATA[
+(function executeRule(current, previous /*null when async*/) {
+
+    // Business Rule: Create Employee Lifecycle Record on Catalog Submit
+    // Trigger: After a new catalog request item is inserted (Onboard/Offboard Employee)
+    // Purpose: Automatically create a linked record in Employee Lifecycle table
+
+    try {
+        var vars = {};
+        var variables = current.variables;
+        for (var key in variables) {
+            vars[key] = variables[key].toString();
+        }
+
+        // Create the lifecycle record
+        var lifecycle = new GlideRecord('x_empl_lifecycle');
+        lifecycle.initialize();
+
+        lifecycle.employee_id       = vars.employee_id || '';
+        lifecycle.employee_full_name = vars.employee_full_name || '';
+        lifecycle.department        = vars.department || '';
+        lifecycle.request_type      = vars.request_type || '';
+        lifecycle.joining_date      = vars.joining_date || null;
+        lifecycle.exit_date         = vars.exit_date || null;
+        lifecycle.manager           = vars.manager || '';
+        lifecycle.assets            = vars.assets || '';
+        lifecycle.access_details    = vars.access_details || '';
+        lifecycle.request_status    = 'pending';
+
+        // Link to the RITM
+        lifecycle.u_ritm = current.sys_id;
+
+        var newSysId = lifecycle.insert();
+
+        if (newSysId) {
+            gs.log('Lifecycle record created: ' + newSysId + ' for Employee: ' + vars.employee_id, 'LifecycleCreationRule');
+        } else {
+            gs.logError('Failed to create lifecycle record for Employee: ' + vars.employee_id, 'LifecycleCreationRule');
+        }
+
+    } catch(e) {
+        gs.logError('Exception in Lifecycle Creation BR: ' + e.message, 'LifecycleCreationRule');
+    }
+
+})(current, previous);
+    ]]></script>
+    <sys_id>d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </sys_script>
+
+</record_update>

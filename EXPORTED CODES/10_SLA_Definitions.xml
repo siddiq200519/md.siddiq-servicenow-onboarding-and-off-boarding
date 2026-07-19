@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: SLA Definitions
+  Table: contract_sla
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Service Level Agreement tracking for critical workflow tasks
+-->
+<record_update table="contract_sla">
+
+  <!-- SLA 1: Manager Approval SLA -->
+  <contract_sla action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - Manager Approval SLA</name>
+    <description>SLA to ensure manager approvals are completed within 3 business days of submission. Escalation triggers if approval is not received within 2 business days.</description>
+    <active>true</active>
+    <type>SLA</type>
+    <table>sysapproval_approver</table>
+    <start_condition>state=requested^source_table=x_empl_lifecycle</start_condition>
+    <stop_condition>state!=requested</stop_condition>
+    <pause_condition>state=not_yet_requested</pause_condition>
+    <duration>3</duration>
+    <duration_unit>days</duration_unit>
+    <business_hours>true</business_hours>
+    <schedule display_value="8-5 weekdays">8-5 weekdays</schedule>
+    <breach_action>
+      <name>Escalate Manager Approval to HR</name>
+      <script><![CDATA[
+// On breach: Notify HR of overdue approval
+var approval = current;
+var empId = approval.document_id.getRefRecord().employee_id;
+gs.eventQueue('x_empl_lifecycle.approval_escalated', approval, empId, approval.approver);
+gs.log('APPROVAL SLA BREACHED: Manager approval overdue for Employee: ' + empId, 'LifecycleSLA');
+      ]]></script>
+    </breach_action>
+    <warning_duration>2</warning_duration>
+    <warning_unit>days</warning_unit>
+    <sys_id>f1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </contract_sla>
+
+  <!-- SLA 2: IT Task Completion SLA -->
+  <contract_sla action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - IT Task Completion SLA</name>
+    <description>SLA ensuring IT provisioning tasks are completed within 1 business day for new onboarding requests and 2 business days for offboarding.</description>
+    <active>true</active>
+    <type>SLA</type>
+    <table>task</table>
+    <start_condition>category=IT^assignment_group.name=IT Department^active=true</start_condition>
+    <stop_condition>state=3</stop_condition>
+    <duration>2</duration>
+    <duration_unit>days</duration_unit>
+    <business_hours>true</business_hours>
+    <schedule display_value="8-5 weekdays">8-5 weekdays</schedule>
+    <sys_id>a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </contract_sla>
+
+  <!-- SLA 3: HR Task Completion SLA -->
+  <contract_sla action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - HR Task Completion SLA</name>
+    <description>SLA ensuring HR tasks (documentation, payroll, records) are completed within 3 business days of manager approval.</description>
+    <active>true</active>
+    <type>SLA</type>
+    <table>task</table>
+    <start_condition>category=HR^assignment_group.name=HR Department^active=true</start_condition>
+    <stop_condition>state=3</stop_condition>
+    <duration>3</duration>
+    <duration_unit>days</duration_unit>
+    <business_hours>true</business_hours>
+    <schedule display_value="8-5 weekdays">8-5 weekdays</schedule>
+    <sys_id>b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </contract_sla>
+
+  <!-- SLA 4: Overall Lifecycle Process SLA -->
+  <contract_sla action="INSERT_OR_UPDATE">
+    <name>Employee Lifecycle - End-to-End Process Completion SLA</name>
+    <description>Overall SLA tracking end-to-end employee lifecycle process completion. Onboarding/offboarding should be fully completed within 5 business days of submission.</description>
+    <active>true</active>
+    <type>SLA</type>
+    <table>x_empl_lifecycle</table>
+    <start_condition>request_status=pending</start_condition>
+    <stop_condition>request_status=completed</stop_condition>
+    <duration>5</duration>
+    <duration_unit>days</duration_unit>
+    <business_hours>true</business_hours>
+    <schedule display_value="8-5 weekdays">8-5 weekdays</schedule>
+    <breach_action>
+      <name>Escalate Overdue Lifecycle Process</name>
+      <script><![CDATA[
+var lifecycle = current;
+var empId = lifecycle.employee_id.toString();
+var reqType = lifecycle.request_type.toString();
+gs.log('LIFECYCLE SLA BREACHED: Process overdue for Employee: ' + empId + ' (' + reqType + ')', 'LifecycleSLA');
+gs.eventQueue('x_empl_lifecycle.sla_breached', lifecycle, empId, reqType);
+      ]]></script>
+    </breach_action>
+    <warning_duration>4</warning_duration>
+    <warning_unit>days</warning_unit>
+    <sys_id>c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7</sys_id>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+  </contract_sla>
+
+</record_update>

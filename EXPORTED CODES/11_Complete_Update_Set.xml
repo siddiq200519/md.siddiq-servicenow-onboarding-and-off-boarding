@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Complete Update Set (All Components)
+  Table: sys_update_set
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+  Description: Master update set export containing all customization records.
+               Import this XML in ServiceNow via:
+               System Update Sets > Retrieved Update Sets > Import XML
+-->
+<record_update table="sys_update_set">
+  <sys_update_set action="INSERT_OR_UPDATE">
+    <name>Employee Onboarding Offboarding - Complete Solution v1.0</name>
+    <description>Complete update set for the Employee Onboarding and Offboarding automated solution. Contains all tables, catalog items, UI policies, business rules, workflows, roles, ACLs, groups, and email notifications.</description>
+    <state>complete</state>
+    <application display_value="Employee Onboarding and Offboarding">employee_onboarding_offboarding</application>
+    <is_default>false</is_default>
+    <sys_id>e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7</sys_id>
+    <sys_class_name>sys_update_set</sys_class_name>
+    <release_date>2026-07-01</release_date>
+    <install_date/>
+    <record_count>50+</record_count>
+
+    <!-- Update Set Contents Registry -->
+    <contents>
+      <entry table="sys_db_object" name="x_empl_lifecycle" description="Employee Lifecycle Custom Table"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.employee_id" description="Employee ID field"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.employee_full_name" description="Employee Full Name field"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.department" description="Department field"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.request_type" description="Request Type field (choice)"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.joining_date" description="Joining Date field"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.exit_date" description="Exit Date field"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.manager" description="Manager reference field"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.request_status" description="Request Status field (choice)"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.assets" description="Assets text field"/>
+      <entry table="sys_dictionary" name="x_empl_lifecycle.access_details" description="Access Details field"/>
+      <entry table="sc_cat_item" name="Onboard / Offboard Employee" description="Service Catalog Item"/>
+      <entry table="item_option_new" name="request_type" description="Catalog Variable - Request Type"/>
+      <entry table="item_option_new" name="employee_id" description="Catalog Variable - Employee ID"/>
+      <entry table="item_option_new" name="employee_full_name" description="Catalog Variable - Employee Full Name"/>
+      <entry table="item_option_new" name="department" description="Catalog Variable - Department"/>
+      <entry table="item_option_new" name="manager" description="Catalog Variable - Manager"/>
+      <entry table="item_option_new" name="joining_date" description="Catalog Variable - Joining Date"/>
+      <entry table="item_option_new" name="exit_date" description="Catalog Variable - Exit Date"/>
+      <entry table="item_option_new" name="assets" description="Catalog Variable - Assets"/>
+      <entry table="item_option_new" name="access_details" description="Catalog Variable - Access Details"/>
+      <entry table="catalog_ui_policy" name="Show Joining Date for Onboarding" description="UI Policy - Onboarding date visibility"/>
+      <entry table="catalog_ui_policy" name="Show Exit Date for Offboarding" description="UI Policy - Offboarding date visibility"/>
+      <entry table="sys_script" name="Auto Update Lifecycle Status on Task Complete" description="Business Rule - Status auto-update"/>
+      <entry table="sys_script" name="Validate Date Fields Based on Request Type" description="Business Rule - Field validation"/>
+      <entry table="sys_script" name="Create Employee Lifecycle Record on Catalog Submit" description="Business Rule - Record creation"/>
+      <entry table="sys_hub_flow" name="Employee Onboarding and Offboarding Workflow" description="Flow Designer - Main workflow"/>
+      <entry table="sys_user_role" name="x_empl_lifecycle.hr" description="Role - HR"/>
+      <entry table="sys_user_role" name="x_empl_lifecycle.it" description="Role - IT"/>
+      <entry table="sys_user_role" name="x_empl_lifecycle.facilities" description="Role - Facilities"/>
+      <entry table="sys_user_role" name="x_empl_lifecycle.security" description="Role - Security"/>
+      <entry table="sys_user_role" name="x_empl_lifecycle.manager" description="Role - Manager"/>
+      <entry table="sys_user_role" name="x_empl_lifecycle.admin" description="Role - Admin"/>
+      <entry table="sys_security_acl" name="x_empl_lifecycle - HR Read Access" description="ACL - HR Read"/>
+      <entry table="sys_security_acl" name="x_empl_lifecycle - HR Write Access" description="ACL - HR Write"/>
+      <entry table="sys_security_acl" name="x_empl_lifecycle - IT Read Access" description="ACL - IT Read"/>
+      <entry table="sys_security_acl" name="x_empl_lifecycle - Facilities Read Access" description="ACL - Facilities Read"/>
+      <entry table="sys_security_acl" name="x_empl_lifecycle - Security Read Access" description="ACL - Security Read"/>
+      <entry table="sys_security_acl" name="x_empl_lifecycle - Manager Team Read Access" description="ACL - Manager Read"/>
+      <entry table="sys_security_acl" name="x_empl_lifecycle - Admin Full Access" description="ACL - Admin Full"/>
+      <entry table="sys_user_group" name="HR Department" description="Group - HR Department"/>
+      <entry table="sys_user_group" name="IT Department" description="Group - IT Department"/>
+      <entry table="sys_user_group" name="Facilities Department" description="Group - Facilities Department"/>
+      <entry table="sys_user_group" name="Security Department" description="Group - Security Department"/>
+      <entry table="sysevent_email_action" name="Employee Lifecycle - Request Submitted Confirmation" description="Email - Submission"/>
+      <entry table="sysevent_email_action" name="Employee Lifecycle - Manager Approval Required" description="Email - Approval"/>
+      <entry table="sysevent_email_action" name="Employee Lifecycle - Request Approved Department Alert" description="Email - Approved"/>
+      <entry table="sysevent_email_action" name="Employee Lifecycle - Process Completed Notification" description="Email - Completed"/>
+      <entry table="sysevent_email_action" name="Employee Lifecycle - Request Rejected Notification" description="Email - Rejected"/>
+      <entry table="contract_sla" name="Employee Lifecycle - Manager Approval SLA" description="SLA - Manager Approval"/>
+      <entry table="contract_sla" name="Employee Lifecycle - IT Task Completion SLA" description="SLA - IT Tasks"/>
+      <entry table="contract_sla" name="Employee Lifecycle - HR Task Completion SLA" description="SLA - HR Tasks"/>
+      <entry table="contract_sla" name="Employee Lifecycle - End-to-End Process Completion SLA" description="SLA - End to End"/>
+    </contents>
+  </sys_update_set>
+</record_update>

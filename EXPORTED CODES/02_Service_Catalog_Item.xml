@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ServiceNow Export: Service Catalog Item
+  Catalog Item: Onboard / Offboard Employee
+  Table: sc_cat_item
+  Project: Automated Employee Onboarding & Offboarding System
+  Author: AYUB HUSSAIN SHAIK
+  Organization: SKILLWALLET INTERNSHIP
+  Date: 2026-07-01
+-->
+<record_update table="sc_cat_item">
+  <sc_cat_item action="INSERT_OR_UPDATE">
+    <name>Onboard / Offboard Employee</name>
+    <short_description>Request for employee onboarding or offboarding process</short_description>
+    <description>Submit this request to initiate the onboarding or offboarding process for an employee. The workflow will automatically route approval to the manager and assign tasks to HR, IT, Facilities, and Security departments.</description>
+    <category display_value="HR Services">hr_services</category>
+    <sc_catalogs display_value="Service Catalog">service_catalog</sc_catalogs>
+    <active>true</active>
+    <availability>on_both</availability>
+    <sys_id>f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8</sys_id>
+    <sys_class_name>sc_cat_item</sys_class_name>
+    <sys_package display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_package>
+    <sys_scope display_value="Employee Onboarding Offboarding">employee_onboarding_offboarding</sys_scope>
+
+    <!-- Catalog Item Variables -->
+    <variables>
+
+      <!-- Variable 1: Request Type -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>request_type</name>
+        <question_text>Request Type</question_text>
+        <type>5</type>  <!-- Select Box -->
+        <mandatory>true</mandatory>
+        <order>100</order>
+        <active>true</active>
+        <sys_id>a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8</sys_id>
+        <lookup_table>x_empl_lifecycle</lookup_table>
+        <lookup_value>request_type</lookup_value>
+        <choices>
+          <question_choice>
+            <text>Onboarding</text>
+            <value>onboarding</value>
+          </question_choice>
+          <question_choice>
+            <text>Offboarding</text>
+            <value>offboarding</value>
+          </question_choice>
+        </choices>
+      </item_option_new>
+
+      <!-- Variable 2: Employee ID -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>employee_id</name>
+        <question_text>Employee ID</question_text>
+        <type>6</type>  <!-- Single Line Text -->
+        <mandatory>true</mandatory>
+        <order>200</order>
+        <active>true</active>
+        <sys_id>b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8</sys_id>
+        <help_text>Enter the unique employee identification number</help_text>
+      </item_option_new>
+
+      <!-- Variable 3: Employee Full Name -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>employee_full_name</name>
+        <question_text>Employee Full Name</question_text>
+        <type>6</type>  <!-- Single Line Text -->
+        <mandatory>true</mandatory>
+        <order>300</order>
+        <active>true</active>
+        <sys_id>c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8</sys_id>
+        <help_text>Enter the full legal name of the employee</help_text>
+      </item_option_new>
+
+      <!-- Variable 4: Department -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>department</name>
+        <question_text>Department</question_text>
+        <type>5</type>  <!-- Select Box -->
+        <mandatory>true</mandatory>
+        <order>400</order>
+        <active>true</active>
+        <sys_id>d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8</sys_id>
+        <choices>
+          <question_choice>
+            <text>Human Resources</text>
+            <value>hr</value>
+          </question_choice>
+          <question_choice>
+            <text>Information Technology</text>
+            <value>it</value>
+          </question_choice>
+          <question_choice>
+            <text>Facilities</text>
+            <value>facilities</value>
+          </question_choice>
+          <question_choice>
+            <text>Security</text>
+            <value>security</value>
+          </question_choice>
+          <question_choice>
+            <text>Finance</text>
+            <value>finance</value>
+          </question_choice>
+          <question_choice>
+            <text>Operations</text>
+            <value>operations</value>
+          </question_choice>
+        </choices>
+      </item_option_new>
+
+      <!-- Variable 5: Manager -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>manager</name>
+        <question_text>Manager</question_text>
+        <type>8</type>  <!-- Reference -->
+        <mandatory>false</mandatory>
+        <order>500</order>
+        <active>true</active>
+        <sys_id>e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8</sys_id>
+        <reference_table>sys_user</reference_table>
+        <help_text>Select the direct manager for this employee</help_text>
+      </item_option_new>
+
+      <!-- Variable 6: Joining Date -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>joining_date</name>
+        <question_text>Joining Date</question_text>
+        <type>9</type>  <!-- Date -->
+        <mandatory>false</mandatory>
+        <order>600</order>
+        <active>true</active>
+        <sys_id>f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c9</sys_id>
+        <help_text>Specify the employee start date (required for Onboarding)</help_text>
+        <visible_standalone>false</visible_standalone>
+      </item_option_new>
+
+      <!-- Variable 7: Exit Date -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>exit_date</name>
+        <question_text>Exit Date</question_text>
+        <type>9</type>  <!-- Date -->
+        <mandatory>false</mandatory>
+        <order>700</order>
+        <active>true</active>
+        <sys_id>a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9</sys_id>
+        <help_text>Specify the employee last working date (required for Offboarding)</help_text>
+        <visible_standalone>false</visible_standalone>
+      </item_option_new>
+
+      <!-- Variable 8: Assets -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>assets</name>
+        <question_text>Assets to be Assigned/Returned</question_text>
+        <type>2</type>  <!-- Multi-line Text -->
+        <mandatory>false</mandatory>
+        <order>800</order>
+        <active>true</active>
+        <sys_id>b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9</sys_id>
+        <help_text>List equipment, devices, or assets to be provisioned (Onboarding) or returned (Offboarding)</help_text>
+      </item_option_new>
+
+      <!-- Variable 9: Access Details -->
+      <item_option_new action="INSERT_OR_UPDATE">
+        <name>access_details</name>
+        <question_text>Access Details</question_text>
+        <type>2</type>  <!-- Multi-line Text -->
+        <mandatory>false</mandatory>
+        <order>900</order>
+        <active>true</active>
+        <sys_id>c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9</sys_id>
+        <help_text>Specify system access, permissions, or accounts to be granted or revoked</help_text>
+      </item_option_new>
+
+    </variables>
+  </sc_cat_item>
+</record_update>
